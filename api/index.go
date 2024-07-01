@@ -1,9 +1,9 @@
-
 package handler
 
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	. "github.com/tbxark/g4vercel"
 )
@@ -11,35 +11,17 @@ import (
 func Handler(w http.ResponseWriter, r *http.Request) {
 	server := New()
 
-	server.GET("/", func(context *Context) {
+	query := r.URL.Query().Get("visitor_name")
+	ipAddr := "127.0.0.1"
+	query = strings.Trim(query, `"`)
+
+	greeting := fmt.Sprintf("Hello, %v! The temperature is 11 degrees Celsius in Mark.", query)
+
+	server.GET(`/api/hello?visitor_name="Mark"`, func(context *Context) {
 		context.JSON(200, H{
-			"message": "hello go from vercel !!!!",
-		})
-	})
-	server.GET("/hello", func(context *Context) {
-		name := context.Query("name")
-		if name == "" {
-			context.JSON(400, H{
-				"message": "name not found",
-			})
-		} else {
-			context.JSON(200, H{
-				"data": fmt.Sprintf("Hello %s!", name),
-			})
-		}
-	})
-	server.GET("/user/:id", func(context *Context) {
-		context.JSON(400, H{
-			"data": H{
-				"id": context.Param("id"),
-			},
-		})
-	})
-	server.GET("/long/long/long/path/*test", func(context *Context) {
-		context.JSON(200, H{
-			"data": H{
-				"url": context.Path,
-			},
+			"client_ip": ipAddr,
+			"greeting":  greeting,
+			"location":  "New York",
 		})
 	})
 	server.Handle(w, r)
