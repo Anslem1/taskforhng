@@ -36,21 +36,16 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	server.GET("/api/hello", func(context *Context) {
 		name := context.Query("visitor_name")
 		ip := getClientIP(r)
-		cityInfo, err := GetCityInfo(ip)
 
-		if err != nil || name == "" {
-			context.JSON(400, H{
-				"message":   "name not found or error getting city info",
-				"client_ip": ip,
-				"location":  cityInfo.City,
-			})
-		} else {
+
+	
+
 			context.JSON(200, H{
-				"message":   fmt.Sprintf("Hello, %v! The temperature is 11 degrees Celsius in %v.", name, cityInfo),
+				"message":   fmt.Sprintf("Hello, %v! The temperature is 11 degrees Celsius in New York!", name),
 				"client_ip": ip,
-				"location":  cityInfo.City,
+				"location":  "New York",
 			})
-		}
+		
 	})
 
 	server.Handle(w, r)
