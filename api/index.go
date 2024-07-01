@@ -2,9 +2,11 @@ package handler
 
 import (
 	"fmt"
-	. "github.com/tbxark/g4vercel"
 	"net"
 	"net/http"
+	"strings"
+
+	. "github.com/tbxark/g4vercel"
 )
 
 type ipInfo struct {
@@ -36,16 +38,13 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	server.GET("/api/hello", func(context *Context) {
 		name := context.Query("visitor_name")
 		ip := getClientIP(r)
+		name = strings.Trim(name, `"`)
+		context.JSON(200, H{
+			"message":   fmt.Sprintf("Hello, %v! The temperature is 11 degrees Celsius in New York!", name),
+			"client_ip": ip,
+			"location":  "New York",
+		})
 
-
-	
-
-			context.JSON(200, H{
-				"message":   fmt.Sprintf("Hello, %v! The temperature is 11 degrees Celsius in New York!", name),
-				"client_ip": ip,
-				"location":  "New York",
-			})
-		
 	})
 
 	server.Handle(w, r)
