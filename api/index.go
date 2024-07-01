@@ -48,8 +48,8 @@ func getCityInfo(ip string) (string, error) {
 		return "", err
 	}
 
-	info.City = ipInfoResp
-	return ipInfoResp, nil
+	info.City = ipInfoResp 
+	return ipInfoResp , nil
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -66,6 +66,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		ip := getClientIP(r)
 		cityInfo, err := getCityInfo(ip)
 
+		fmt.Println(cityInfo, "cityy", "errorrrr:", err)
 		if err != nil || name == "" {
 			context.JSON(400, H{
 				"message":   "name not found or error getting city info",
