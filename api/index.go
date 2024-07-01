@@ -48,8 +48,8 @@ func getCityInfo(ip string) (string, error) {
 		return "", err
 	}
 
-	ipInfoResp = info.City 
-	return ipInfoResp , nil
+	info.City = ipInfoResp
+	return ipInfoResp, nil
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
